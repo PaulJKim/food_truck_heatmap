@@ -5,6 +5,10 @@ defmodule FoodTruckHeatmapWeb.SearchLive do
     {:ok, assign(socket, selected_permit_status: "", food_type_query: "")}
   end
 
+  def handle_event("dropdown_changed", %{"permit_status" => selected_option}, socket) do
+    {:noreply, assign(socket, selected_permit_status: selected_option)}
+  end
+
   def handle_event("validate", %{"food_type" => food_type}, socket) do
     {:noreply, assign(socket, food_type_query: food_type)}
   end
@@ -14,19 +18,19 @@ defmodule FoodTruckHeatmapWeb.SearchLive do
         params,
         socket
       ) do
-    query =
-      Enum.reduce(params, "?", fn {key, value}, acc ->
-        if value != "",
-          do: acc <> "#{key}=#{value}&",
-          else: acc
-      end)
-      |> String.trim_trailing("&")
-
+    query = get_query(params)
     {:noreply, push_redirect(socket, to: "/map/#{query}")}
   end
 
-  def handle_event("dropdown_changed", %{"permit_status" => selected_option}, socket) do
-    {:noreply, assign(socket, selected_permit_status: selected_option)}
+  # Helper for creating a query from form fields. Make it general in case more filters
+  # are added in the future
+  defp get_query(params) do
+    Enum.reduce(params, "?", fn {key, value}, acc ->
+      if value != "",
+        do: acc <> "#{key}=#{value}&",
+        else: acc
+    end)
+    |> String.trim_trailing("&")
   end
 
   def render(assigns) do
