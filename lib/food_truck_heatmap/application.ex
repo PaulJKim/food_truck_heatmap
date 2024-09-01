@@ -2,6 +2,7 @@ defmodule FoodTruckHeatmap.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
+  alias FoodTruckHeatmap.FoodTrucks
 
   use Application
 
@@ -13,9 +14,10 @@ defmodule FoodTruckHeatmap.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: FoodTruckHeatmap.PubSub},
       # Start the Endpoint (http/https)
-      FoodTruckHeatmapWeb.Endpoint
+      FoodTruckHeatmapWeb.Endpoint,
       # Start a worker by calling: FoodTruckHeatmap.Worker.start_link(arg)
       # {FoodTruckHeatmap.Worker, arg}
+      FoodTrucks
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
