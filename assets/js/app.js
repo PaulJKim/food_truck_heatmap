@@ -26,8 +26,30 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
+let hooks = {}
+
+hooks.Map = {
+  mounted() {
+    // Initalize and center the map on San Francisco 
+    this.map = L.map('mapid').setView([37.7749, -122.4194], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 17,
+    }).addTo(this.map);
+
+    // Get the food truck data from the DOM
+    const foodTrucks = JSON.parse(this.el.dataset.foodTrucks);
+
+    // Prepare the points for the heatmap
+    const heatMapPoints = foodTrucks.map(truck => [truck.latitude, truck.longitude]);
+
+    // Add the heatmap layer
+    L.heatLayer(heatMapPoints, {minOpacity: .4, radius: 25, blur: 15, gradient: {0.2: 'blue', 0.65: 'lime', 1: 'red'}}).addTo(this.map);
+  }
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}})
+let liveSocket = new LiveSocket("/live", Socket, {params: {_csrf_token: csrfToken}, hooks: hooks})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
@@ -42,4 +64,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-
