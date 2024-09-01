@@ -2,22 +2,24 @@ defmodule FoodTruckHeatmapWeb.Router do
   use FoodTruckHeatmapWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {FoodTruckHeatmapWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {FoodTruckHeatmapWeb.LayoutView, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", FoodTruckHeatmapWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :index
+    get("/", PageController, :index)
+    live("/search", SearchLive)
+    live("/map", MapLive)
   end
 
   # Other scopes may use custom stacks.
@@ -36,9 +38,8 @@ defmodule FoodTruckHeatmapWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
-
-      live_dashboard "/dashboard", metrics: FoodTruckHeatmapWeb.Telemetry
+      pipe_through(:browser)
+      live_dashboard("/dashboard", metrics: FoodTruckHeatmapWeb.Telemetry)
     end
   end
 
@@ -48,9 +49,9 @@ defmodule FoodTruckHeatmapWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end
