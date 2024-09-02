@@ -63,7 +63,9 @@ defmodule FoodTruckHeatmap.FoodTrucks do
   end
 
   defp fetch_and_parse_csv do
-    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- HTTPoison.get(@csv_url) do
+    http_client = Application.get_env(:food_truck_heatmap, :http_client)
+
+    with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- http_client.get(@csv_url) do
       {:ok, parse_csv(body)}
     else
       error ->

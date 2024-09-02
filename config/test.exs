@@ -1,5 +1,7 @@
 import Config
 
+config :food_truck_heatmap, http_client: Fake.HTTPoison
+
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :food_truck_heatmap, FoodTruckHeatmapWeb.Endpoint,
@@ -8,8 +10,7 @@ config :food_truck_heatmap, FoodTruckHeatmapWeb.Endpoint,
   server: false
 
 # In test we don't send emails.
-config :food_truck_heatmap, FoodTruckHeatmap.Mailer,
-  adapter: Swoosh.Adapters.Test
+config :food_truck_heatmap, FoodTruckHeatmap.Mailer, adapter: Swoosh.Adapters.Test
 
 # Print only warnings and errors during test
 config :logger, level: :warn
