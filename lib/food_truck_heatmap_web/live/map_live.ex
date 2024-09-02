@@ -1,3 +1,12 @@
+# Liveview that contains a map and list view of the search result of food trucks.
+#
+# With more time, there would be more integreation between these two views such as
+# adding a pin on the map whenver a list item is hovered or focusing on the pin
+# and displaying more details about the food truck when the list item is clicked.
+# I went with liveview for this project due to time contraints, but a richer
+# user experience would likely be more achievable with the use of React or another
+# JS framework.
+
 defmodule FoodTruckHeatmapWeb.MapLive do
   use Phoenix.LiveView, layout: {FoodTruckHeatmapWeb.LayoutView, "live.html"}
   alias FoodTruckHeatmap.FoodTrucks

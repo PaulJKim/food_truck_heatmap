@@ -1,3 +1,10 @@
+# Genserver that periodically fetches the latest food truck data from the API and provides a client function get_food_trucks/1
+#
+# I opted for a Genserver instead of a plain module that fetches from the API with each call since
+# the Genserver nicely encapsulates all of the relevate logic in one place.
+# It also makes searches quicker since we don't have to make a network call each time the user wants to
+# make a new search.
+
 defmodule FoodTruckHeatmap.FoodTrucks do
   use GenServer
   alias NimbleCSV.RFC4180, as: CSV
@@ -63,6 +70,7 @@ defmodule FoodTruckHeatmap.FoodTrucks do
   end
 
   defp fetch_and_parse_csv do
+    # Make this configurable so we can unit test
     http_client = Application.get_env(:food_truck_heatmap, :http_client)
 
     with {:ok, %HTTPoison.Response{status_code: 200, body: body}} <- http_client.get(@csv_url) do

@@ -1,3 +1,8 @@
+# Liveview that contains a simple form with some inputs that allow a user to search for food trucks.
+#
+# These form inputs could live on the same liveview as the map view and have the map update in
+# real time as the inputs change, but due to a tricky bug and time constraints, I opted to
+# make them separate liveviews and pass the search inputs as a url query for simplicity's sake.
 defmodule FoodTruckHeatmapWeb.SearchLive do
   use Phoenix.LiveView, layout: {FoodTruckHeatmapWeb.LayoutView, "live.html"}
 
