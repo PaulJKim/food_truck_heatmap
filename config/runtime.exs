@@ -12,8 +12,11 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
   config :food_truck_heatmap, FoodTruckHeatmapWeb.Endpoint, server: true
 end
 
-if config_env() == :prod do
+if config_env() != :test do
   config :food_truck_heatmap, http_client: HTTPoison
+end
+
+if config_env() == :prod do
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want
